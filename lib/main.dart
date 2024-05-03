@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:absher/Chatpage.dart';
+import 'package:absher/connect_gpt.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,8 +21,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  final GlobalKey<FormState> _key = GlobalKey();
+
+  final TextEditingController _cont = TextEditingController();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -63,13 +76,19 @@ class MainScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 0.0, horizontal: 16),
-                      child: TextField(
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                            hintText: ' تفاصيل \n اكتب وصف البلاغ الخاص بك هنا',
-                            border: InputBorder.none),
-                        minLines: 3,
-                        maxLines: 5,
+                      child: Form(
+                        key: _key,
+                        child: TextFormField(
+                          controller: _cont,
+                          validator: (value) => value == null ? "" : null,
+                          textAlign: TextAlign.right,
+                          decoration: InputDecoration(
+                              hintText:
+                                  ' تفاصيل \n اكتب وصف البلاغ الخاص بك هنا',
+                              border: InputBorder.none),
+                          minLines: 3,
+                          maxLines: 5,
+                        ),
                       ),
                     ),
                   ),
@@ -113,11 +132,24 @@ class MainScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChatScreen()),
-                    );
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    if (_key.currentState!.validate()) {
+                      String query = _cont.text;
+                      Connect _connect = Connect();
+                      String gpt = await _connect.trigger(query: query);
+                      setState(() {
+                        isLoading = false;
+                        _cont.text = '';
+                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChatScreen(message: gpt)),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF71D286),
@@ -135,6 +167,21 @@ class MainScreen extends StatelessWidget {
             ),
           ),
         ),
+        if (isLoading)
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+            child: Center(
+              child: SizedBox(
+                width: 70,
+                height: 70,
+                child: CircularProgressIndicator(
+                  color: Colors.green[200],
+                  strokeWidth: 5,
+                  strokeCap: StrokeCap.round,
+                ),
+              ),
+            ),
+          )
       ],
     );
   }

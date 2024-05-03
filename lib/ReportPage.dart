@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TrackingPage extends StatelessWidget {
+class ReportScreen extends StatelessWidget {
+  const ReportScreen({required this.message});
+  final String message;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,7 +13,7 @@ class TrackingPage extends StatelessWidget {
           // Background image
           Positioned.fill(
             child: Image.asset(
-              'assets/imge.jpg', // Make sure to add your asset in the pubspec.yaml
+              'assets/imge.jpg',
               fit: BoxFit.cover,
             ),
           ),
@@ -88,7 +91,8 @@ class TrackingPage extends StatelessWidget {
                       ':الجهة المعنية',
                       style: TextStyle(color: Colors.black, fontSize: 17),
                     ),
-                    // Ai output
+
+                    // -----  Ai output
                     Text(
                       ' الأمن العام',
                       style: TextStyle(color: Colors.black54, fontSize: 14),
@@ -98,9 +102,10 @@ class TrackingPage extends StatelessWidget {
                       ': ملخص البلاغ',
                       style: TextStyle(color: Colors.black, fontSize: 17),
                     ),
-                    // Ai output
+
+                    // -----   Ai output
                     Text(
-                      'ابتزاز',
+                      message,
                       style: TextStyle(color: Colors.black54, fontSize: 16),
                     ),
                     SizedBox(height: 10),
@@ -108,7 +113,8 @@ class TrackingPage extends StatelessWidget {
                       ': مرفقات',
                       style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
-                    // Ai output
+
+                    // -----  Ai output
                     Text(
                       'لا يوجد مرفقات.',
                       style: TextStyle(color: Colors.black54, fontSize: 16),
@@ -118,7 +124,8 @@ class TrackingPage extends StatelessWidget {
                       ': موعد الجلسة',
                       style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
-                    // Ai output
+
+                    //-----   Ai output
                     Text(
                       'الثلاثاء ، الثامن عشر من أبريل لعام 2024',
                       style: TextStyle(color: Colors.black54, fontSize: 16),
@@ -129,7 +136,9 @@ class TrackingPage extends StatelessWidget {
                         backgroundColor: Color(0xFF71D286),
                         padding: EdgeInsets.symmetric(vertical: 15),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                       child: SizedBox(
                           width: double.infinity,
                           child: Center(
