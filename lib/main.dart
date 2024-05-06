@@ -1,7 +1,5 @@
 import 'dart:ui';
 
-import 'package:absher/Chatpage.dart';
-import 'package:absher/connect_gpt.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,7 +20,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -33,6 +31,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final TextEditingController _cont = TextEditingController();
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -56,10 +55,35 @@ class _MainScreenState extends State<MainScreen> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  // Handle menu button if necessary
+                  Scaffold.of(context).openEndDrawer();
                 },
               ),
             ],
+          ),
+          endDrawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                DrawerHeader(
+                  child: Text('Drawer Header'),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                ),
+                ListTile(
+                  title: Text('Item 1'),
+                  onTap: () {
+                    // Add your logic here
+                  },
+                ),
+                ListTile(
+                  title: Text('Item 2'),
+                  onTap: () {
+                    // Add your logic here
+                  },
+                ),
+              ],
+            ),
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
@@ -138,17 +162,11 @@ class _MainScreenState extends State<MainScreen> {
                     });
                     if (_key.currentState!.validate()) {
                       String query = _cont.text;
-                      Connect _connect = Connect();
-                      String gpt = await _connect.trigger(query: query);
+                      // Your Connect class and logic here...
                       setState(() {
                         isLoading = false;
                         _cont.text = '';
                       });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChatScreen(message: gpt)),
-                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
