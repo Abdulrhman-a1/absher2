@@ -39,9 +39,9 @@ OpenAI API
 ## المشاركين
 
 
-@Dev-k0 Khaled alyami. 
+Khaled alyami.  Github : @Dev-k0 
 
-@Abdulrhman-a1 Abdulrhman albusaad.
+Abdulrhman albusaad. Github : @Abdulrhman-a1
 
 Waeeil Alessa.
 
